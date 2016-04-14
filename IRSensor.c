@@ -24,6 +24,11 @@ bool IRSensor_CheckFront(){
   else return false;
 }
 
+bool IRSensor_CheckCenter(){
+  if(IRSensor_CheckCenterRight() && IRSensor_CheckCenterLeft())return true;
+  else reutnr false;
+}
+
 bool IRSensor_CheckLeftFront(){
   if(IR_FRONTLEFT_BUF < IR_TRIGGER)return true;
   else return false;
