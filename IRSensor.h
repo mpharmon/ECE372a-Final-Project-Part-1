@@ -1,4 +1,5 @@
 #include <xc.h>
+#include <stdbool.h>
 
 #ifndef IR_SENSOR_H_
 #define IR_SENSOR_H_
@@ -17,14 +18,14 @@
 void IRSensor_Init();
 
 // Shortcut that Checks all Front Sensors
-unsigned short IRSensor_CheckFront()
+bool IRSensor_CheckFront();
 
-unsigned short IRSensor_CheckLeftFront();
+bool IRSensor_CheckLeftFront();
 
-unsigned short IRSensor_CheckRightFront();
+bool IRSensor_CheckRightFront();
 
-unsigned short IRSensor_CheckCenterRight();
+bool IRSensor_CheckCenterRight();
 
-unsigned short IRSensor_CheckCenterLeft();
+bool IRSensor_CheckCenterLeft();
 
 #endif // IRSENSOR_H_

@@ -19,27 +19,27 @@ void IRSensor_Init(){
   AD1CON1bits.ON = 1;     // Turn ADC On
 };
 
-unsigned short IRSensor_CheckFront(){
-  if(IRSensor_CheckLeftFront() && IRSensor_CheckRightFront() && IRSensor_CheckCenterLeft() && IRSensor_CheckCenterRight())return 1;
-  else return 0;
+bool IRSensor_CheckFront(){
+  if(IRSensor_CheckLeftFront() && IRSensor_CheckRightFront() && IRSensor_CheckCenterLeft() && IRSensor_CheckCenterRight())return true;
+  else return false;
 }
 
-unsigned short IRSensor_CheckLeftFront(){
-  if(IR_FRONTLEFT_BUF < IR_TRIGGER)return 1;
-  else return 0;
+bool IRSensor_CheckLeftFront(){
+  if(IR_FRONTLEFT_BUF < IR_TRIGGER)return true;
+  else return false;
 };
 
-unsigned short IRSensor_CheckRightFront(){
-  if(IR_FRONTRIGHT_BUF < IR_TRIGGER)return 1;
-  else return 0;
+bool IRSensor_CheckRightFront(){
+  if(IR_FRONTRIGHT_BUF < IR_TRIGGER)return true;
+  else return false;
 };
 
-unsigned short IRSensor_CheckCenterRight(){
-  if(IR_CENTERRIGHT_BUF < IR_TRIGGER)return 1;
-  else return 0;
+bool IRSensor_CheckCenterRight(){
+  if(IR_CENTERRIGHT_BUF < IR_TRIGGER)return true;
+  else return false;
 };
 
-unsigned short IRSensor_CheckCenterLeft(){
-  if(IR_CENTERLEFT_BUF < IR_TRIGGER)return 1;
-  else return 0;
+bool IRSensor_CheckCenterLeft(){
+  if(IR_CENTERLEFT_BUF < IR_TRIGGER)return true;
+  else return false;
 };
