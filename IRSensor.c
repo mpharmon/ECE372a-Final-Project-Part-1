@@ -1,3 +1,18 @@
+/*  
+ *  Class: ECE372a
+ * 
+ *  Group: 209
+ * 
+ *  Lab: Final Lab Part 1
+ * 
+ *  File: IRSensor.c
+ * 
+ *  Member: Michael Harmon (Software)
+ *          Abdul Rana (Hardware)
+ *          James Beulke (System Integration)
+ *          Ali Hassan (Quality Control)
+ */
+
 #include "IRSensor.h"
 
 void IRSensor_Init(){
@@ -5,7 +20,7 @@ void IRSensor_Init(){
   AD1CON1bits.SSRC = 7;   // Auto Converstion
   AD1CON1bits.ASAM = 1;   // Enable Auto Sample
   AD1CON2bits.VCFG = 0;   // Voltage Refrence (Vdd & Vss)
-  AD1CON2bits.CSCNA = 1;  // Enable Scaning of Inputs (Needed Since We are Using Multiple)
+  AD1CON2bits.CSCNA = 1;  // Enable Scaning of Inputs (Needed Since We are Using Multiple ANx's)
   AD1CON2bits.SMPI = 15;  // Interrupt after 16 Sample and Converts
   AD1CON2bits.BUFM = 0;   // Use a Single 16 Byte Buffer
   AD1CON2bits.ALTS = 0;   // Only Use Mux A
@@ -26,7 +41,7 @@ bool IRSensor_CheckFront(){
 
 bool IRSensor_CheckCenter(){
   if(IRSensor_CheckCenterRight() && IRSensor_CheckCenterLeft())return true;
-  else reutnr false;
+  else return false;
 }
 
 bool IRSensor_CheckLeftFront(){

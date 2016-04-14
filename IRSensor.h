@@ -1,3 +1,18 @@
+/*  
+ *  Class: ECE372a
+ * 
+ *  Group: 209
+ * 
+ *  Lab: Final Lab Part 1
+ * 
+ *  File: IRSensor.h
+ * 
+ *  Member: Michael Harmon (Software)
+ *          Abdul Rana (Hardware)
+ *          James Beulke (System Integration)
+ *          Ali Hassan (Quality Control)
+ */
+
 #include <xc.h>
 #include <stdbool.h>
 

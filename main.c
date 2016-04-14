@@ -1,3 +1,18 @@
+/*  
+ *  Class: ECE372a
+ * 
+ *  Group: 209
+ * 
+ *  Lab: Final Lab Part 1
+ * 
+ *  File: main.c
+ * 
+ *  Member: Michael Harmon (Software)
+ *          Abdul Rana (Hardware)
+ *          James Beulke (System Integration)
+ *          Ali Hassan (Quality Control)
+ */
+
 #include <xc.h>
 #include "IRSensor.h"
 #include "../Motor.X/Motor.h"
@@ -26,15 +41,15 @@ void main(void){
   LCD_Init();
   while(1){
     LCD_MoveCursor(1,1);
-    LCD_PrintString("LF:%3.1fRF:%3.1f",IR_FRONTLEFT_BUF/1023.0,IR_FRONTRIGHT_BUF/1023.0);
+    char stringToPrint[16];
+    sprintf(stringToPrint,"LF:%3.1fRF:%3.1f",(IR_FRONTLEFT_BUF/1023.0),(IR_FRONTRIGHT_BUF/1023.0));
+    LCD_PrintString(stringToPrint);
     LCD_MoveCursor(1,2);
-    LCD_PrintString("CL:%3.1fCR:%3.1f",IR_CENTERLEFT_BUF/1023.0,IR_CENTERRIGHT_BUF/1023.0);
+    sprintf(stringToPrint,"CL:%3.1fCR:%3.1f",(IR_CENTERLEFT_BUF/1023.0),(IR_CENTERRIGHT_BUF/1023.0));
+    LCD_PrintString(stringToPrint);
     switch(state){
       case START:
-        Motor_Set1Forward();
-        Motor_Set1Forward();
-        Motor_Set1DutyCycle(0.0);
-        Motor_Set1DutyCycle(0.0);
+        Motor_Enable();
         if(IRSensor_CheckCenter()){
           state = TRAVEL;
         };
@@ -69,9 +84,13 @@ void main(void){
         if(!IRSensor_CheckCenterRight()){state = ADJUST_LEFT;break;};
         if(IRSensor_CheckFront()){
           lineCount++;
-          if(lineCount == 3){
+          if(lineCount == 1){// Entering Extra Credit 'T' Intersection
+            state = TURN_LEFT;
+          }else if(lineCount == 2){// Exiting Extra Credit 'T' Intersection
+            state = TURN_RIGHT;
+          }else if(lineCount == 5){
             state = TURN_AROUND;
-          }else if(lineCount == 4){
+          }else if(lineCount == 5){
             state = END;
           }
         };
