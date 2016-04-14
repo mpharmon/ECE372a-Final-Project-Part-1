@@ -6,7 +6,7 @@ void IRSensor_Init(){
   AD1CON1bits.ASAM = 1;   // Enable Auto Sample
   AD1CON2bits.VCFG = 0;   // Voltage Refrence (Vdd & Vss)
   AD1CON2bits.CSCNA = 1;  // Enable Scaning of Inputs (Needed Since We are Using Multiple)
-  AD1CON2bits.SMPI = 15;  //Interrupt after 16 Sample and Converts
+  AD1CON2bits.SMPI = 15;  // Interrupt after 16 Sample and Converts
   AD1CON2bits.BUFM = 0;   // Use a Single 16 Byte Buffer
   AD1CON2bits.ALTS = 0;   // Only Use Mux A
   AD1CON3bits.ADRC = 0;   // Clock Derived From Peripheral Bus
@@ -17,23 +17,29 @@ void IRSensor_Init(){
   // TODO: ADJUST INPUTS SO ONLY USING THE NEEDED 4
   AD1CSSL = 0xf;          // Scan All ANx Inputs
   AD1CON1bits.ON = 1;     // Turn ADC On
-}
-unsigned short IRSensor_CheckLeftFront(){
-  if(IR_FRONTLEFT_BUF > IR_TRIGGER)return 1;
+};
+
+unsigned short IRSensor_CheckFront(){
+  if(IRSensor_CheckLeftFront() && IRSensor_CheckRightFront() && IRSensor_CheckCenterLeft() && IRSensor_CheckCenterRight())return 1;
   else return 0;
 }
+
+unsigned short IRSensor_CheckLeftFront(){
+  if(IR_FRONTLEFT_BUF < IR_TRIGGER)return 1;
+  else return 0;
+};
 
 unsigned short IRSensor_CheckRightFront(){
-  if(IR_FRONTRIGHT_BUF > IR_TRIGGER)return 1;
+  if(IR_FRONTRIGHT_BUF < IR_TRIGGER)return 1;
   else return 0;
-}
+};
 
 unsigned short IRSensor_CheckCenterRight(){
-  if(IR_CENTERRIGHT_BUF > IR_TRIGGER)return 1;
+  if(IR_CENTERRIGHT_BUF < IR_TRIGGER)return 1;
   else return 0;
-}
+};
 
 unsigned short IRSensor_CheckCenterLeft(){
-  if(IR_CENTERLEFT_BUF > IR_TRIGGER)return 1;
+  if(IR_CENTERLEFT_BUF < IR_TRIGGER)return 1;
   else return 0;
-}
+};
