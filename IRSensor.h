@@ -32,7 +32,24 @@
 #define IR_CENTERRIGHT_BUF ADC1BUF3
 
 // Defines at What ADC Value The Sensor is considered not over the black tape
+// NOTE: MAY NEED DIFFERENT TRIGGER VALUES FOR CENTER vs. OUTSIDE
+// NOTE: MAY NEED DIFFERENT TRIGGER VALUES FOR EACH...THAT WOULD BE PAINFUL!
 #define IR_TRIGGER         1
+
+// Delay(ms) to be used during adjustments
+#define IR_DELAY_ADJUSTMENT 200
+
+// Delay(ms) to be used during turn around
+#define IR_DELAY_TURNAROUND 500
+
+//Delay(ms) to be used during Turns
+#define IR_DELAY_TURN       250
+
+// The Biasing Value for Adjusting the Direction of the Robot
+#define IR_BIAS_ADJUST    1.1
+
+// The Biasing Value for Turning the Robot.
+#define IR_BIAS_TURN      0.5
 
 // Initializes IR Sensor
 void IRSensor_Init();

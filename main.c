@@ -14,7 +14,9 @@
  */
 
 #include <xc.h>
+#include "config.h"
 #include "IRSensor.h"
+#include <stdbool.h>
 #include "../Motor.X/Motor.h"
 #include "../delay.X/delay.h"
 #include "../LCD.X/lcd.h"
@@ -33,6 +35,7 @@ typedef enum STATE{
 void main(void){
   STATE state = START;
   unsigned short int lineCount = 0;
+  bool ignoreTurns = false;
   // Initialize Motor(s))
   Motor_Init();
   // Initialize IRSensor(s))
@@ -55,20 +58,20 @@ void main(void){
         };
         break;
       case TURN_LEFT:
-        delayMs(300);
+        delayMs(IR_DELAY_TURN);
         while(!IRSensor_CheckCenterLeft()){
           Motor_Set1Backward();
-          Motor_Set1DutyCycle(0.5 * STANDARD_DUTY_CYCLE);
+          Motor_Set1DutyCycle(IR_BIAS_TURN * STANDARD_DUTY_CYCLE);
           Motor_Set2Forward();
           Motor_Set2DutyCycle(STANDARD_DUTY_CYCLE);
         };
         state = TRAVEL;
         break;
       case TURN_RIGHT:
-        delayMs(300);
+        delayMs(IR_DELAY_TURN);
         while(!IRSensor_CheckCenterRight()){
           Motor_Set2Backward();
-          Motor_Set2DutyCycle(0.5 * STANDARD_DUTY_CYCLE);
+          Motor_Set2DutyCycle(IR_BIAS_TURN * STANDARD_DUTY_CYCLE);
           Motor_Set1Forward();
           Motor_Set1DutyCycle(STANDARD_DUTY_CYCLE);
         }
@@ -88,30 +91,28 @@ void main(void){
             state = TURN_LEFT;
           }else if(lineCount == 2){// Exiting Extra Credit 'T' Intersection
             state = TURN_RIGHT;
-          }else if(lineCount == 5){
+          }else if(lineCount == 5){// End of First Time Through
             state = TURN_AROUND;
-          }else if(lineCount == 5){
-            state = END;
-          }
+          };
         };
-        if(IRSensor_CheckLeftFront()){state = TURN_LEFT;break;};
-        if(IRSensor_CheckRightFront()){state = TURN_RIGHT;break;};
+        if(!ignoreTurns && IRSensor_CheckLeftFront()){state = TURN_LEFT;break;};
+        if(!ignoreTurns && IRSensor_CheckRightFront()){state = TURN_RIGHT;break;};
         break;
       case ADJUST_RIGHT:
-        Motor_Set1DutyCycle(1.1 * STANDARD_DUTY_CYCLE);
-        delayMs(200);
+        Motor_Set1DutyCycle(IR_BIAS_ADJUST * STANDARD_DUTY_CYCLE);
+        delayMs(IR_DELAY_ADJUSTMENT);
         Motor_Set1DutyCycle(STANDARD_DUTY_CYCLE);
-        Motor_Set2DutyCycle(1.1 * STANDARD_DUTY_CYCLE);
-        delayMs(200);
+        Motor_Set2DutyCycle(IR_BIAS_ADJUST * STANDARD_DUTY_CYCLE);
+        delayMs(IR_DELAY_ADJUSTMENT);
         Motor_Set2DutyCycle(STANDARD_DUTY_CYCLE);
         state = TRAVEL;
         break;
       case ADJUST_LEFT:
-        Motor_Set2DutyCycle(1.1 * STANDARD_DUTY_CYCLE);
-        delayMs(200);
+        Motor_Set2DutyCycle(IR_BIAS_ADJUST * STANDARD_DUTY_CYCLE);
+        delayMs(IR_DELAY_ADJUSTMENT);
         Motor_Set2DutyCycle(STANDARD_DUTY_CYCLE);
-        Motor_Set1DutyCycle(1.1 * STANDARD_DUTY_CYCLE);
-        delayMs(200);
+        Motor_Set1DutyCycle(IR_BIAS_ADJUST * STANDARD_DUTY_CYCLE);
+        delayMs(IR_DELAY_ADJUSTMENT);
         Motor_Set1DutyCycle(STANDARD_DUTY_CYCLE);
         state = TRAVEL;
         break;
@@ -120,8 +121,9 @@ void main(void){
           Motor_Set1Backward();
           Motor_Set2Forward();
         };
-        delayMs(250);
+        delayMs(IR_DELAY_TURNAROUND);
         state = TRAVEL;
+        ignoreTurns = true;
         break;
       case END:
         Motor_Disable();
