@@ -19,57 +19,52 @@
 #ifndef IR_SENSOR_H_
 #define IR_SENSOR_H_
 
-// Defines Front Left Sensor Buffer
-#define IR_FRONTLEFT_BUF   ADC1BUF0
-
-// Defines Front Right Sensor Buffer
-#define IR_FRONTRIGHT_BUF  ADC1BUF1
-
-// Defines Center Left Sensor Buffer
-#define IR_CENTERLEFT_BUF  ADC1BUF2
-
-// Defines Center Right Sensor Buffer
-#define IR_CENTERRIGHT_BUF ADC1BUF3
-
 // Defines at What ADC Value The Sensor is considered not over the black tape
-// NOTE: MAY NEED DIFFERENT TRIGGER VALUES FOR CENTER vs. OUTSIDE
-// NOTE: MAY NEED DIFFERENT TRIGGER VALUES FOR EACH...THAT WOULD BE PAINFUL!
-#define IR_TRIGGER         1
+#define IR_TRIGGER_ADJUST       525
+#define IR_TRIGGER_TRAVEL       475
+#define IR_TRIGGER_TURN         650
 
-// Delay(ms) to be used during adjustments
-#define IR_DELAY_ADJUSTMENT 200
+#define IR_SENSOR_DIFFERENTIAL  150
 
 // Delay(ms) to be used during turn around
-#define IR_DELAY_TURNAROUND 500
+#define IR_DELAY_TURNAROUND     500
 
 //Delay(ms) to be used during Turns
-#define IR_DELAY_TURN       250
+#define IR_DELAY_TURN           250
 
 // The Biasing Value for Adjusting the Direction of the Robot
-#define IR_BIAS_ADJUST    1.1
+#define MOTOR_BIAS_ADJUST       1.2
 
 // The Biasing Value for Turning the Robot.
-#define IR_BIAS_TURN      0.5
+#define MOTOR_BIAS_TURN         1.35
 
 // Initializes IR Sensor
 void IRSensor_Init();
 
 // Shortcut that Checks all Front Sensors
-bool IRSensor_CheckFront();
+bool IRSensor_CheckFront(int trigger);
 
 // Shortcut that Checks Front Center Sensors
-bool IRSensor_CheckCenter();
+bool IRSensor_CheckCenter(int trigger);
+
+unsigned int IRSensor_GetLeftFront();
 
 // Checks if Front Left Sensor is Less Than Trigger Value
-bool IRSensor_CheckLeftFront();
+bool IRSensor_CheckLeftFront(int trigger);
+
+unsigned int IRSensor_GetRightFront();
 
 // Checks if Front Right Sensor is Less Than Trigger Value
-bool IRSensor_CheckRightFront();
+bool IRSensor_CheckRightFront(int trigger);
+
+unsigned int IRSensor_GetCenterRight();
 
 // Checks if Center Right Sensor is Less Than Trigger Value
-bool IRSensor_CheckCenterRight();
+bool IRSensor_CheckCenterRight(int trigger);
+
+unsigned int IRSensor_GetCenterLeft();
 
 // Checks if Center Left Sensor is Less Than Trigger Value
-bool IRSensor_CheckCenterLeft();
+bool IRSensor_CheckCenterLeft(int trigger);
 
 #endif // IRSENSOR_H_
